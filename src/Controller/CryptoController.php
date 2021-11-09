@@ -3,22 +3,37 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class CryptoController extends AbstractController
 {
+
+    /**
+     * @var HttpClientInterface
+     */
+    private $client;
+
+    public function __construct(HttpClientInterface $client)
+    {
+        $this->client = $client;
+    }
+
     /**
      * @Route("/api/price", name="get_price")
      *
-     * @return Response
+     * @throws TransportExceptionInterface
      */
-    public function index(): Response
+    public function index(): JsonResponse
     {
-        //TODO Recupérer la route pour afficher les prix
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/CryptoController.php',
-        ]);
+        $fetchData = $this->client->request(
+            'GET',
+            'https://api.binance.com/api/v3/ticker/price'
+        );
+
+        return JsonResponse::fromJsonString($fetchData->getContent());
     }
 }
