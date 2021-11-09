@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use http\Env;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,9 @@ class CryptoController extends AbstractController
      */
     private $client;
 
+    /**
+     * @param HttpClientInterface $client
+     */
     public function __construct(HttpClientInterface $client)
     {
         $this->client = $client;
