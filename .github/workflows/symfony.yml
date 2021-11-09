@@ -28,7 +28,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
     - name: Install/Update Dependencies
-      run: composer update -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: composer update
     - name: Create Database
       run: |
         mkdir -p data
